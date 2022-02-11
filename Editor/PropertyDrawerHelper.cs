@@ -197,6 +197,76 @@ namespace Barliesque.InspectorTools.Editor
 			return prop;
 		}
 
+
+		protected SerializedProperty Toggle(float width, string label, string field, string tooltip = null)
+		{
+			var prop = _property.FindPropertyRelative(field);
+			if (prop == null)
+			{
+				Debug.LogError($"Unknown property: {field}");
+				return _property;
+			}
+
+			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+
+			_position.width = width;
+			_position.height = EditorGUI.GetPropertyHeight(prop);
+			prop.boolValue = EditorGUI.ToggleLeft(_position, new GUIContent(label, tooltip), prop.boolValue);
+			_position.x += width;
+			return prop;
+		}
+		
+		
+		protected SerializedProperty StringDropdown(float labelWidth, string label, float fieldWidth, string field, string[] options, string tooltip = null)
+		{
+			var prop = _property.FindPropertyRelative(field);
+			if (prop == null)
+			{
+				Debug.LogError($"Unknown property: {field}");
+				return _property;
+			}
+
+			_position.width = labelWidth;
+			_position.height = EditorGUI.GetPropertyHeight(prop);
+			EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
+			_position.x += labelWidth;
+
+			_position.width = fieldWidth < 0f ? (_rect.width - _position.x) : fieldWidth;
+			var current = Array.IndexOf(options, prop.stringValue);
+			var selected = EditorGUI.Popup(_position, current, options);
+			if (selected != current)
+			{
+				prop.stringValue = selected >= 0 ? options[selected] : null;
+			}
+			
+			_position.x += fieldWidth + HorizSpacing;
+			return prop;
+		}
+		
+		protected SerializedProperty StringDropdown(float fieldWidth, string field, string[] options)
+		{
+			var prop = _property.FindPropertyRelative(field);
+			if (prop == null)
+			{
+				Debug.LogError($"Unknown property: {field}");
+				return _property;
+			}
+
+			_position.width = fieldWidth < 0f ? (_rect.width - _position.x) : fieldWidth;
+			_position.height = EditorGUI.GetPropertyHeight(prop);
+
+			var current = Array.IndexOf(options, prop.stringValue);
+			var selected = EditorGUI.Popup(_position, current, options);
+			if (selected != current)
+			{
+				prop.stringValue = selected >= 0 ? options[selected] : null;
+			}
+			
+			_position.x += fieldWidth + HorizSpacing;
+			return prop;
+		}
+		
+
 		protected SerializedProperty EnumField<T>(float labelWidth, string label, float fieldWidth, string field,
 			string tooltip = null) where T : struct, IConvertible
 		{
