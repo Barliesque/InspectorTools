@@ -190,10 +190,10 @@ namespace Barliesque.InspectorTools.Editor
 			}
 			else
 			{
-				if (!string.IsNullOrEmpty(_header) && !_foldable)
-				{
-					EditorTools.Header(_header);
-				}
+				// if (!string.IsNullOrEmpty(_header) && !_foldable)
+				// {
+				// 	EditorTools.Header(_header);
+				// }
 				_scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, false, false);
 				List.DoLayoutList();
 				EditorGUILayout.EndScrollView();
