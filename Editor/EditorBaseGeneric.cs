@@ -95,6 +95,16 @@ namespace Barliesque.InspectorTools.Editor
 			return prop;
 		}
 
+		public SerializedProperty PropertyField(string propName, GUIContent label)
+		{
+			SerializedProperty prop = GetProperty(propName);
+			if (prop != null)
+			{
+				EditorGUILayout.PropertyField(prop, label);
+			}
+			return prop;
+		}
+
 		static protected SerializedProperty PropertyField(EditorBase<T> editor, string propName, string label, bool includeChildren)
 		{
 			SerializedProperty prop = editor.GetProperty(propName);
