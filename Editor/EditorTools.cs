@@ -790,5 +790,39 @@ namespace Barliesque.InspectorTools.Editor
 			GUI.enabled = wasEnabled;
 			return changed;
 		}
+
+		/// <summary>
+		/// Draw a property field for an object reference as well as fields for each of the selected object's child properties.
+		/// </summary>
+		/// <param name="parent">The parent property</param>
+		/// <param name="label">(optional) A label</param>
+		/// <param name="tooltip">(optional) A tooltip</param>
+		/// <returns>Returns a reference to the SerializedObject of the selected object.  Null if none is selected.</returns>
+		static public SerializedObject PropertyFieldWithChildren(SerializedProperty parent, string label = null, string tooltip = null)
+		{
+			if (string.IsNullOrEmpty(label)) label = parent.displayName;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = parent.tooltip;
+			EditorGUILayout.PropertyField(parent, new GUIContent(label, tooltip));
+			
+			if (parent.objectReferenceValue == null) return null;
+			var parentSerial = new SerializedObject(parent.objectReferenceValue);
+			
+			BeginInfoBox();
+			var current = parentSerial.GetIterator();
+			bool first = true;
+
+			while (current.NextVisible(first))
+			{
+				if (current.name == "m_Script") continue;
+				EditorGUILayout.PropertyField(current);
+				first = false;
+			}
+			
+			parentSerial.ApplyModifiedProperties();
+			EndInfoBox();
+			
+			return parentSerial;
+		}
+		
 	}
 }
