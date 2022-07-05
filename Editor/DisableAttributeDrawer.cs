@@ -13,8 +13,10 @@ namespace Barliesque.InspectorTools.Editor
 
 		override public void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
+			if (property == null) return;
 			EditorGUI.BeginDisabledGroup(true);
-			EditorGUILayout.PropertyField(property, new GUIContent(property.displayName, property.tooltip), property.hasVisibleChildren);
+			var content = new GUIContent(property.displayName, property.tooltip);
+			EditorGUILayout.PropertyField(property, content, property.hasVisibleChildren);
 			EditorGUI.EndDisabledGroup();
 		}
 	}
