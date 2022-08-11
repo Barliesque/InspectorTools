@@ -55,6 +55,16 @@ namespace Barliesque.InspectorTools.Editor
 		//TODO  Add optional method ShowWarning()
 		//TODO  If warning's been set ShowWarning hasn't been called directly, then show it after calling CustomInspector()
 
+		protected SerializedProperty ObjectField<O>(string propName, bool allowSceneObjects)
+		{
+			SerializedProperty prop = GetProperty(propName);
+			if (prop != null)
+			{
+				EditorGUILayout.ObjectField(prop.objectReferenceValue, typeof(O), allowSceneObjects);
+			}
+			return prop;
+		}
+
 		static protected SerializedProperty PropertyField(EditorBase<T> editor, string propName)
 		{
 			SerializedProperty prop = editor.GetProperty(propName);
