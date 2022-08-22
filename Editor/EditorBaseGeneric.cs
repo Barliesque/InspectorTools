@@ -60,7 +60,10 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
-				EditorGUILayout.ObjectField(prop.objectReferenceValue, typeof(O), allowSceneObjects);
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.PrefixLabel(prop.displayName);
+				prop.objectReferenceValue = EditorGUILayout.ObjectField(prop.objectReferenceValue, typeof(O), allowSceneObjects);
+				EditorGUILayout.EndHorizontal();
 			}
 			return prop;
 		}
