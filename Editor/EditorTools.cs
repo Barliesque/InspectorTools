@@ -151,13 +151,33 @@ namespace Barliesque.InspectorTools.Editor
 		}
 
 
-		static public void HelpBox(string help, MessageType type = MessageType.None)
+		/// <summary>
+		/// Show a message in a box, optionally with an icon to indicate warning, error or general info.
+		/// </summary>
+		/// <param name="help">The help message</param>
+		/// <param name="type">(Optional)  Type of icon to display.</param>
+		/// <returns>Returns true if the mouse has been clicked on this HelpBox</returns>
+		static public bool HelpBox(string help, MessageType type = MessageType.None)
 		{
 			EditorStyles.helpBox.richText = true;
+			
 			try
 			{
 				EditorGUILayout.HelpBox(help, type);
-			} catch { }
+			} catch
+			{
+				return false;
+			}
+
+			var curEvent = Event.current;
+			if (curEvent == null) return false;
+			if (curEvent.type != EventType.MouseUp || curEvent.button != 0) return false;
+
+			var rect = GUILayoutUtility.GetLastRect();
+			if (!rect.Contains(curEvent.mousePosition)) return false;
+				
+			curEvent.Use();
+			return true;
 		}
 
 		//---
