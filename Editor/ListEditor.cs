@@ -125,11 +125,13 @@ namespace Barliesque.InspectorTools.Editor
 		{
 			if (_foldable)
 			{
-				if (GUI.Button(rect, $"▼ {_header}", EditorStyles.label)) HeaderClicked();
+				var header = new GUIContent($"▼ {_header}", List.serializedProperty.tooltip);
+				if (GUI.Button(rect, header, EditorStyles.label)) HeaderClicked();
 			}
 			else
 			{
-				EditorGUI.LabelField(rect, _header);
+				var header = new GUIContent($"{_header}", List.serializedProperty.tooltip);
+				EditorGUI.LabelField(rect, header);
 			}
 			List.displayAdd = List.displayRemove = GUI.enabled;
 		}
