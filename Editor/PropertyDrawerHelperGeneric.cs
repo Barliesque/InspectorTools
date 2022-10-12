@@ -214,15 +214,47 @@ namespace Barliesque.InspectorTools.Editor
 
 			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
 
-			_position.width = labelWidth;
 			_position.height = EditorGUI.GetPropertyHeight(prop);
-			EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
-			_position.x += labelWidth;
+			if (labelWidth > 0f && !string.IsNullOrEmpty(label))
+			{
+				_position.width = labelWidth;
+				EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
+				_position.x += labelWidth;
+			}
 			_position.width = fieldWidth < 0f ? (_rect.width - _position.x) : fieldWidth;
 
 			var options = Enum.GetNames(typeof(T));
 			for (int i = 0; i < options.Length; i++) options[i] = options[i].SplitCamelCase();
 			var values = (int[]) Enum.GetValues(typeof(T));
+			var index = Array.IndexOf(values, prop.intValue);
+
+			var selected = EditorGUI.Popup(_position, index, options);
+			if (selected != index)
+			{
+				prop.intValue = values[selected];
+			}
+
+			_position.x += fieldWidth + HorizSpacing;
+			return prop;
+		}
+		
+		protected SerializedProperty EnumField<E>(float labelWidth, string label, float fieldWidth, SerializedProperty prop,
+			string tooltip = null) where E : struct, IConvertible
+		{
+			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+
+			_position.height = EditorGUI.GetPropertyHeight(prop);
+			if (labelWidth > 0f && !string.IsNullOrEmpty(label))
+			{
+				_position.width = labelWidth;
+				EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
+				_position.x += labelWidth;
+			}
+			_position.width = fieldWidth < 0f ? (_rect.width - _position.x) : fieldWidth;
+
+			var options = Enum.GetNames(typeof(E));
+			for (int i = 0; i < options.Length; i++) options[i] = options[i].SplitCamelCase();
+			var values = (int[]) Enum.GetValues(typeof(E));
 			var index = Array.IndexOf(values, prop.intValue);
 
 			var selected = EditorGUI.Popup(_position, index, options);
