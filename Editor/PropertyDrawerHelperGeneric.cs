@@ -202,6 +202,27 @@ namespace Barliesque.InspectorTools.Editor
 			return prop;
 		}
 
+		protected SerializedProperty ObjectField<O>(float labelWidth, string label, float fieldWidth, string field, bool allowSceneObjects, string tooltip = null)
+		{
+			var prop = _property.FindPropertyRelative(field);
+			if (prop == null)
+			{
+				Debug.LogError($"Unknown property: {field}");
+				return _property;
+			}
+
+			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			
+			_position.width = labelWidth;
+			_position.height = EditorGUI.GetPropertyHeight(prop);
+			EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
+			_position.x += labelWidth;
+			_position.width = fieldWidth < 0f ? (_rect.width - _position.x) : fieldWidth;
+			prop.objectReferenceValue = EditorGUI.ObjectField(_position, prop.objectReferenceValue, typeof(O), allowSceneObjects);
+			_position.x += fieldWidth + HorizSpacing;
+			return prop;
+		}		
+
 		protected SerializedProperty EnumField<E>(float labelWidth, string label, float fieldWidth, string field,
 			string tooltip = null) where E : struct, IConvertible
 		{
