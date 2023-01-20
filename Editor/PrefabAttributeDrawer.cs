@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Barliesque.InspectorTools.Editor
 {
-
-	[CustomPropertyDrawer(typeof(PrefabAttribute))]
+	// Disabled due to not functioning properly when applied to arrays
+	//[CustomPropertyDrawer(typeof(PrefabAttribute))]
 	public class PrefabAttributeDrawer : PropertyDrawer
 	{
 
