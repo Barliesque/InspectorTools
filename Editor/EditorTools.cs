@@ -188,6 +188,13 @@ namespace Barliesque.InspectorTools.Editor
 			EditorGUILayout.LabelField(bold ? $"<b>{message}</b>" : $"{message}", RichText);
 		}
 
+		static public void Header(string message, string tooltip, bool bold = true, bool spaceBefore = true)
+		{
+			if (spaceBefore) GUILayout.Space(10f);
+			var label = new GUIContent(bold ? $"<b>{message}</b>" : $"{message}", tooltip);
+			EditorGUILayout.LabelField(label, RichText);
+		}
+
 
 		static public void Separator()
 		{
