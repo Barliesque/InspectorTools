@@ -168,7 +168,7 @@ namespace Barliesque.InspectorTools.Editor
 				return _property;
 			}
 
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
 
 			_position.width = labelWidth;
 			_position.height = EditorGUI.GetPropertyHeight(prop);
@@ -190,7 +190,7 @@ namespace Barliesque.InspectorTools.Editor
 				return _property;
 			}
 
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
 
 			_position.width = labelWidth;
 			_position.height = EditorGUI.GetPropertyHeight(prop);
@@ -211,7 +211,7 @@ namespace Barliesque.InspectorTools.Editor
 				return _property;
 			}
 
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
 			
 			_position.width = labelWidth;
 			_position.height = EditorGUI.GetPropertyHeight(prop);
@@ -233,7 +233,7 @@ namespace Barliesque.InspectorTools.Editor
 				return _property;
 			}
 
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
 
 			_position.height = EditorGUI.GetPropertyHeight(prop);
 			if (labelWidth > 0f && !string.IsNullOrEmpty(label))
@@ -262,7 +262,7 @@ namespace Barliesque.InspectorTools.Editor
 		protected SerializedProperty EnumField<E>(float labelWidth, string label, float fieldWidth, SerializedProperty prop,
 			string tooltip = null) where E : struct, IConvertible
 		{
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
 
 			_position.height = EditorGUI.GetPropertyHeight(prop);
 			if (labelWidth > 0f && !string.IsNullOrEmpty(label))
@@ -293,6 +293,7 @@ namespace Barliesque.InspectorTools.Editor
 			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
 			_position.width = labelWidth < 0f ? (_rect.width - _position.x) : labelWidth;
 			_position.height = LineHeight;
+			
 			if (style == null)
 			{
 				EditorGUI.LabelField(_position, new GUIContent(label, tooltip));
@@ -314,7 +315,8 @@ namespace Barliesque.InspectorTools.Editor
 				return _property;
 			}
 
-			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			if (string.IsNullOrEmpty(tooltip)) tooltip = prop.tooltip ?? _propTooltip;
+			
 			string label = prop.stringValue;
 			_position.width = labelWidth < 0f ? (_rect.width - _position.x) : labelWidth;
 			_position.height = LineHeight;
