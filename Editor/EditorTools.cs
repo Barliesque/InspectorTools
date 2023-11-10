@@ -760,30 +760,30 @@ namespace Barliesque.InspectorTools.Editor
 		//***
 
 		
-		static public bool ToggleButton(bool state, GUIContent label)
+		static public bool ToggleButton(bool state, GUIContent label, GUILayoutOption options = null)
 		{
 			bool pressed = false;
 			if (state)
 			{
-				pressed = GUILayout.Button(label, ButtonDown);
+				pressed = GUILayout.Button(label, ButtonDown, options);
 			}
 			else
 			{
-				pressed = GUILayout.Button(label);
+				pressed = GUILayout.Button(label, options);
 			}
 			return (pressed) ? !state : state;
 		}
 		
-		static public bool ToggleButton(bool state, string label, string tooltip = null)
+		static public bool ToggleButton(bool state, string label, string tooltip = null, GUILayoutOption options = null)
 		{
 			bool pressed = false;
 			if (state)
 			{
-				pressed = GUILayout.Button(new GUIContent(label, tooltip), ButtonDown);
+				pressed = GUILayout.Button(new GUIContent(label, tooltip), ButtonDown, options);
 			}
 			else
 			{
-				pressed = GUILayout.Button(new GUIContent(label, tooltip));
+				pressed = GUILayout.Button(new GUIContent(label, tooltip), options);
 			}
 			return (pressed) ? !state : state;
 		}

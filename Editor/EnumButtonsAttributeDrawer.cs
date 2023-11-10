@@ -23,9 +23,6 @@ namespace Barliesque.InspectorTools.Editor
 			var allowMultiple = attribute.AllowMultiple;
 			int maxPerLine = attribute.MaxPerLine;
 
-			// Change check is needed to prevent values being overwritten during multiple-selection
-			EditorGUI.BeginChangeCheck();
-
 			int newValue = 0;
 
 			//
@@ -36,6 +33,10 @@ namespace Barliesque.InspectorTools.Editor
 			int count = enumNames.Length;
 			int lines = Mathf.CeilToInt((float)count / maxPerLine);
 			EditorGUI.BeginProperty(new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, (ButtonHeight + VerticalSpace) * lines), label, property);
+
+			// Change check is needed to prevent values being overwritten during multiple-selection
+			EditorGUI.BeginChangeCheck();
+			
 			EditorGUI.LabelField(new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, ButtonHeight), label);
 			float buttonWidth = (rect.width - EditorGUIUtility.labelWidth) / Mathf.Min(count, maxPerLine);
 			int oldValue = property.intValue;
@@ -55,11 +56,11 @@ namespace Barliesque.InspectorTools.Editor
 					}
 				}
 			}
-			EditorGUI.EndProperty();
 
 			if (EditorGUI.EndChangeCheck()) {
 				property.intValue = newValue;
 			}
+			EditorGUI.EndProperty();
 		}
 
 

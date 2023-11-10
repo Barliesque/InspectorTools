@@ -107,6 +107,16 @@ namespace Barliesque.InspectorTools.Editor
 			}
 			return prop;
 		}
+		
+		public SerializedProperty PropertyField(string propName, string label, params GUILayoutOption[] options)
+		{
+			SerializedProperty prop = GetProperty(propName);
+			if (prop != null)
+			{
+				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip), options);
+			}
+			return prop;
+		}
 
 		public SerializedProperty PropertyField(string propName, GUIContent label)
 		{
@@ -114,6 +124,16 @@ namespace Barliesque.InspectorTools.Editor
 			if (prop != null)
 			{
 				EditorGUILayout.PropertyField(prop, label);
+			}
+			return prop;
+		}
+
+		public SerializedProperty PropertyField(string propName, GUIContent label, params GUILayoutOption[] options)
+		{
+			SerializedProperty prop = GetProperty(propName);
+			if (prop != null)
+			{
+				EditorGUILayout.PropertyField(prop, label, options);
 			}
 			return prop;
 		}

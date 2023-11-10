@@ -305,6 +305,22 @@ namespace Barliesque.InspectorTools.Editor
 
 			_position.x += labelWidth + HorizSpacing;
 		}
+		
+
+		protected void Icon(string iconName, int size = 20, string tooltip = null, GUIStyle style = null)
+		{
+			if (string.IsNullOrEmpty(tooltip)) tooltip = _propTooltip;
+			_position.y += 1;
+			_position.width = size;
+			_position.height = size;
+			var icon = (Texture2D)EditorGUIUtility.IconContent(iconName).image;
+			icon.alphaIsTransparency = true;
+			GUI.Box(_position, new GUIContent(icon, tooltip), style ?? new GUIStyle());
+			
+			_position.x += size + HorizSpacing;
+			_position.y -= 1;
+		}
+		
 
 		protected SerializedProperty FieldAsLabel(float labelWidth, string field, string tooltip = null)
 		{
