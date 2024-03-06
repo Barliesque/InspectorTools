@@ -95,7 +95,19 @@ namespace Barliesque.InspectorTools.Editor
 			}
 		}
 
-		static public GUIStyle ButtonUp { get; private set; } = new GUIStyle(GUI.skin.button);
+		static GUIStyle _buttonUp;
+		static public GUIStyle ButtonUp
+		{
+			get
+			{
+				if (_buttonUp == null)
+				{
+					_buttonUp = new GUIStyle(GUI.skin.button);
+					_buttonUp.normal.textColor *= 0.8f;
+				}
+				return _buttonUp;
+			}
+		}
 
 
 		static public void BeginInfoBox()
@@ -776,16 +788,39 @@ namespace Barliesque.InspectorTools.Editor
 		
 		static public bool ToggleButton(bool state, string label, string tooltip = null, GUILayoutOption options = null)
 		{
+			var guiLabel = new GUIContent(label, tooltip);
 			bool pressed = false;
-			if (state)
+			if (options == null)
 			{
-				pressed = GUILayout.Button(new GUIContent(label, tooltip), ButtonDown, options);
+				pressed = GUILayout.Button(guiLabel, state ? ButtonDown : ButtonUp);
 			}
 			else
 			{
-				pressed = GUILayout.Button(new GUIContent(label, tooltip), options);
+				pressed = GUILayout.Button(guiLabel, state ? ButtonDown : ButtonUp, options);
 			}
 			return (pressed) ? !state : state;
+		}
+
+		static public int RadioButtons(int state, string[] buttons, GUILayoutOption options = null)
+		{
+			EditorGUILayout.BeginHorizontal();
+			for (int i = 0; i < buttons.Length; i++)
+			{
+				if (GUILayout.Button(buttons[i], i == state ? ButtonDown : ButtonUp)) state = i;
+			}
+			EditorGUILayout.EndHorizontal();
+			return state;
+		}
+
+		static public int RadioButtons(int state, GUIContent[] buttons, GUILayoutOption options = null)
+		{
+			EditorGUILayout.BeginHorizontal();
+			for (int i = 0; i < buttons.Length; i++)
+			{
+				if (GUILayout.Button(buttons[i], i == state ? ButtonDown : ButtonUp)) state = i;
+			}
+			EditorGUILayout.EndHorizontal();
+			return state;
 		}
 		
 
