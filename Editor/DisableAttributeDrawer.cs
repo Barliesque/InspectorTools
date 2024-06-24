@@ -8,15 +8,15 @@ namespace Barliesque.InspectorTools.Editor
 	{
 		override public float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			return base.GetPropertyHeight(property, label) - 20f;
+			return EditorGUI.GetPropertyHeight(property, label, property.hasVisibleChildren);
 		}
-
+		
 		override public void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			if (property == null) return;
 			EditorGUI.BeginDisabledGroup(true);
 			var content = new GUIContent(property.displayName, property.tooltip);
-			EditorGUILayout.PropertyField(property, content, property.hasVisibleChildren);
+			EditorGUI.PropertyField(position, property, content, property.hasVisibleChildren);
 			EditorGUI.EndDisabledGroup();
 		}
 	}
