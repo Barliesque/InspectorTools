@@ -885,6 +885,18 @@ namespace Barliesque.InspectorTools.Editor
 			
 			return parentSerial;
 		}
+
+		/// <summary>
+		/// Show a message in a box, with an icon to indicate warning, error or general info.
+		/// If clicked in the Inspector, an object will be pinged.
+		/// </summary>
+		/// <param name="help">The help message</param>
+		/// <param name="context">The object to ping.</param>
+		/// <param name="type">Type of icon to display.</param>
+		static public void HelpBox(string help, GameObject context, MessageType type = MessageType.Warning)
+		{
+			if (HelpBox(help, type)) EditorGUIUtility.PingObject(context);
+		}
 		
 	}
 }
