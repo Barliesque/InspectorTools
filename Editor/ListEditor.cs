@@ -28,7 +28,7 @@ namespace Barliesque.InspectorTools.Editor
 		
 		private string _header;
 		private readonly bool _showHeader;
-		private int _linesPerElement;
+		private float _linesPerElement;
 
 		public Action<SerializedProperty> OnElementAdded;
 		
@@ -41,7 +41,7 @@ namespace Barliesque.InspectorTools.Editor
 		/// <param name="isFolded">Should the list be folded up by default?</param>
 		/// <param name="header">By default, the property name is used as the header.  Assign a custom header here, or an empty string for no header.</param>
 		/// <param name="linesPerElement">How many lines per element?</param>
-		public ListEditor(SerializedObject serializedObject, string field, bool isFolded, string header = null, int linesPerElement = 1) : this(
+		public ListEditor(SerializedObject serializedObject, string field, bool isFolded, string header = null, float linesPerElement = 1) : this(
 			serializedObject.FindProperty(field), header, linesPerElement)
 		{
 			_foldable = true;
@@ -55,7 +55,7 @@ namespace Barliesque.InspectorTools.Editor
 		/// <param name="field">The path to the property.</param>
 		/// <param name="header">By default, the property name is used as the header.  Assign a custom header here, or an empty string for no header.</param>
 		/// <param name="linesPerElement">How many lines per element?</param>
-		public ListEditor(SerializedObject serializedObject, string field, string header = null, int linesPerElement = 1) : this(
+		public ListEditor(SerializedObject serializedObject, string field, string header = null, float linesPerElement = 1) : this(
 			serializedObject.FindProperty(field), header, linesPerElement)
 		{ }
 
@@ -66,7 +66,7 @@ namespace Barliesque.InspectorTools.Editor
 		/// <param name="isFolded">Should the list be folded up by default?</param>
 		/// <param name="header">By default, the property name is used as the header.  Assign a custom header here, or an empty string for no header.</param>
 		/// <param name="linesPerElement">How many lines per element?</param>
-		public ListEditor(SerializedProperty property, bool isFolded, string header = null, int linesPerElement = 1) : this(
+		public ListEditor(SerializedProperty property, bool isFolded, string header = null, float linesPerElement = 1) : this(
 			property, header, linesPerElement)
 		{
 			_foldable = true;
@@ -79,7 +79,7 @@ namespace Barliesque.InspectorTools.Editor
 		/// <param name="property">The serialized property containing the List.</param>
 		/// <param name="header">By default, the property name is used as the header.  Assign a custom header here, or an empty string for no header.</param>
 		/// <param name="linesPerElement">How many lines per element?</param>
-		public ListEditor(SerializedProperty property, string header = null, int linesPerElement = 1)
+		public ListEditor(SerializedProperty property, string header = null, float linesPerElement = 1)
 		{
 			List = new ReorderableList(property.serializedObject, property, true, !string.IsNullOrEmpty(header), true, true)
 			{
