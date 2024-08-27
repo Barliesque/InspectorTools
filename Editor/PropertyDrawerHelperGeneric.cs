@@ -3,6 +3,7 @@ using System.Linq;
 using Barliesque.Utils;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Graphs;
 using Object = System.Object;
 
 namespace Barliesque.InspectorTools.Editor
@@ -125,13 +126,23 @@ namespace Barliesque.InspectorTools.Editor
 			_position.y += 7f;
 			_gaps += 7;
 		}
-
+		
 		protected void Divider(float width)
 		{
 			if (_position.x > Margin) NextLine();
 
 			var rect = new Rect(Margin, _position.y + 3f, width, 1f);
 			EditorGUI.DrawRect(rect, Color.grey * GUI.color);
+			_position.y += 7f;
+			_gaps += 7;
+		}
+		
+		protected void Divider(float leftOffset, Color color)
+		{
+			if (_position.x > Margin) NextLine();
+
+			var rect = new Rect(Margin + leftOffset, _position.y + 3f, _rect.width - Margin - leftOffset, 1f);
+			EditorGUI.DrawRect(rect, color * GUI.color);
 			_position.y += 7f;
 			_gaps += 7;
 		}
