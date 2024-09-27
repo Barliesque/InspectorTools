@@ -14,10 +14,10 @@ namespace Barliesque.InspectorTools.Editor
 		override public void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			if (IsHidden(property)) return;
-			++EditorGUI.indentLevel;
+			if (Indent) ++EditorGUI.indentLevel;
 			var content = new GUIContent(property.displayName, property.tooltip);
 			EditorGUI.PropertyField(position, property, content, property.hasVisibleChildren);
-			--EditorGUI.indentLevel;
+			if (Indent) --EditorGUI.indentLevel;
 		}
 
 		private bool IsHidden(SerializedProperty property)
@@ -30,5 +30,8 @@ namespace Barliesque.InspectorTools.Editor
 			else Hide = t.boolValue == a.HiddenState;
 			return Hide;
 		}
+
+		private bool Indent => ((HideIfAttribute)attribute).Indent;
+		
 	}
 }
