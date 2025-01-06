@@ -82,6 +82,20 @@ namespace Barliesque.InspectorTools.Editor
 		}
 
 
+		static GUIStyle _stringField;
+		static public GUIStyle StringField {
+			get {
+				if (_stringField == null) {
+					_stringField = new GUIStyle(GUI.skin.button);
+					_stringField.normal.background = InfoBox.normal.background;
+					_stringField.fontStyle = FontStyle.Normal;
+					_stringField.normal.textColor = _stringField.onActive.textColor;
+					_stringField.alignment = TextAnchor.MiddleLeft;
+				}
+				return _stringField;
+			}
+		}
+
 		static GUIStyle _buttonDown;
 		static public GUIStyle ButtonDown {
 			get {
