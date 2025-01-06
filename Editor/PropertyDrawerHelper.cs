@@ -17,6 +17,13 @@ namespace Barliesque.InspectorTools.Editor
 		protected Rect _rect { get; private set; }
 		protected Rect _position;
 
+		protected void AdjustWidth(float delta)
+		{
+			var rect = _rect;
+			rect.width += delta;
+			_rect = rect;
+		}
+
 		virtual protected float LineHeight => 18f;
 		virtual protected float LineSpacing => 2f;
 		virtual protected float HorizSpacing => 8f;
