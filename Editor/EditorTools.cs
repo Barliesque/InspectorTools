@@ -785,6 +785,13 @@ namespace Barliesque.InspectorTools.Editor
 
 		//***
 
+		static public bool ToggleButton(SerializedProperty prop, GUILayoutOption options = null)
+		{
+			var state = prop.boolValue;
+			var result = ToggleButton(state, prop.displayName, prop.tooltip, options);
+			if (result != state) prop.boolValue = result;
+			return result;
+		}
 		
 		static public bool ToggleButton(bool state, GUIContent label, GUILayoutOption options = null)
 		{
