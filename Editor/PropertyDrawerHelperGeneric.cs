@@ -64,6 +64,8 @@ namespace Barliesque.InspectorTools.Editor
 			var target = property.serializedObject.targetObject;
 			var obj = fieldInfo.GetValue(target);
 			Index = -1;
+			
+			EditorGUI.BeginChangeCheck();
 			if (obj.GetType().IsArray)
 			{
 				Index = Convert.ToInt32(new string(Property.propertyPath.Where(c => char.IsDigit(c)).ToArray()));
@@ -72,8 +74,13 @@ namespace Barliesque.InspectorTools.Editor
 			else
 			{
 				CustomDrawer(obj as T);
-			}		
- 
+			}
+
+			if (EditorGUI.EndChangeCheck())
+			{
+				property.serializedObject.ApplyModifiedProperties();
+			}
+			
 			if (Math.Abs(_position.x - Margin) < 0.1f) --_lines;
 
 			// Set indent back to what it was
@@ -142,6 +149,16 @@ namespace Barliesque.InspectorTools.Editor
 			if (_position.x > Margin) NextLine();
 
 			var rect = new Rect(Margin + leftOffset, _position.y + 3f, _rect.width - Margin - leftOffset, 1f);
+			EditorGUI.DrawRect(rect, color * GUI.color);
+			_position.y += 7f;
+			_gaps += 7;
+		}
+		
+		protected void Divider(float leftOffset, float rightOffset, Color color)
+		{
+			if (_position.x > Margin) NextLine();
+
+			var rect = new Rect(Margin + leftOffset, _position.y + 3f, _rect.width - Margin - leftOffset + rightOffset, 1f);
 			EditorGUI.DrawRect(rect, color * GUI.color);
 			_position.y += 7f;
 			_gaps += 7;
