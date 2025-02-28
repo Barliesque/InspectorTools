@@ -793,16 +793,26 @@ namespace Barliesque.InspectorTools.Editor
 			return result;
 		}
 		
+		static public bool ToggleButton(SerializedProperty prop, GUIContent label, GUILayoutOption options = null)
+		{
+			var state = prop.boolValue;
+			var result = ToggleButton(state, label, options);
+			if (result != state) prop.boolValue = result;
+			return result;
+		}
+		
 		static public bool ToggleButton(bool state, GUIContent label, GUILayoutOption options = null)
 		{
 			bool pressed = false;
 			if (state)
 			{
-				pressed = GUILayout.Button(label, ButtonDown, options);
+				if (options != null) pressed = GUILayout.Button(label, ButtonDown, options);
+				else pressed = GUILayout.Button(label, ButtonDown);
 			}
 			else
 			{
-				pressed = GUILayout.Button(label, options);
+				if (options != null) pressed = GUILayout.Button(label, ButtonUp, options);
+				else pressed = GUILayout.Button(label, ButtonUp);
 			}
 			return (pressed) ? !state : state;
 		}
