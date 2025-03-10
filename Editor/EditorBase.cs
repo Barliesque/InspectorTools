@@ -81,6 +81,35 @@ namespace Barliesque.InspectorTools.Editor
 			}
 			return prop;
 		}
+		
+		
+		protected SerializedProperty StringFieldWithDefault(string field, string label, string defaultValue)
+		{
+			var editField = $"edit_{field}";
+			var defaultField = $"default_{field}";
+			
+			var focus = GUI.GetNameOfFocusedControl();
+			var editing = focus == defaultField || focus == editField;
+			var property = GetProperty(field);
+			var notDefault = !string.IsNullOrEmpty(property.stringValue);
+			var fieldLabel = new GUIContent(label, property.tooltip);
+
+			if (editing || notDefault)
+			{
+				GUI.SetNextControlName(editField);
+				EditorGUILayout.PropertyField(property, fieldLabel);
+			}
+			else
+			{
+				GUI.color *= 0.75f; // Imitate GUI disabled
+				GUI.SetNextControlName(defaultField);
+				EditorGUILayout.TextField(fieldLabel, defaultValue, EditorTools.StringField);
+				GUI.color /= 0.75f;
+			}
+
+			return property;
+		}
+		
 
 		static public SerializedProperty GetProperty(EditorBase editor, string propName)
 		{
