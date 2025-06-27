@@ -361,6 +361,17 @@ namespace Barliesque.InspectorTools.Editor
 			_position.x += width + HorizSpacing;
 			return pressed;
 		}
+		
+		protected bool IconButton(GUIContent buttonIcon)
+		{
+			const float width = 24f;
+			_position.width = width;
+			_position.height = LineHeight;
+			bool pressed = GUI.Button(_position, buttonIcon);
+			_position.x += width + HorizSpacing;
+			return pressed;
+		}
+
 
 		protected SerializedProperty Slider(float width, string field, float min = 0.0f, float max = 1.0f)
 		{
