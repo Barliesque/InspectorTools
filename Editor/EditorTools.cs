@@ -928,6 +928,18 @@ namespace Barliesque.InspectorTools.Editor
 		{
 			if (HelpBox(help, type)) EditorGUIUtility.PingObject(context);
 		}
-		
+
+		static public bool CenteredButton(string buttonLabel, string tooltip = null, params GUILayoutOption[] options)
+		{
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.Space();
+			var label = new GUIContent(buttonLabel, tooltip);
+			var pressed = GUILayout.Button(label, options);
+			EditorGUILayout.Space();
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.Space();
+			return pressed;
+		}
 	}
+	
 }
