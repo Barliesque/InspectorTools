@@ -683,6 +683,24 @@ namespace Barliesque.InspectorTools.Editor
 			maxValue = max;
 			return changed;
 		}
+		
+		static public bool MinMaxSlider(string label, ref int minValue, ref int maxValue, int minLimit, int maxLimit)
+		{
+			float min = minValue;
+			float max = maxValue;
+			EditorGUILayout.BeginHorizontal();
+			min = EditorGUILayout.FloatField(label, min);
+			EditorGUILayout.MinMaxSlider(ref min, ref max, minLimit, maxLimit, GUILayout.ExpandWidth(true));
+			max = EditorGUILayout.FloatField(max, GUILayout.Width(56f));
+			EditorGUILayout.EndHorizontal();
+			
+			bool changed = false;
+			minValue = Mathf.RoundToInt(min);
+			changed |= (!min.Equals(minValue));
+			maxValue = Mathf.RoundToInt(max);
+			changed |= (!max.Equals(maxValue));
+			return changed;
+		}
 
 
 		//***
