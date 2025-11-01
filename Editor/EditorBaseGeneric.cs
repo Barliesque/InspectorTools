@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
@@ -8,8 +9,8 @@ namespace Barliesque.InspectorTools.Editor
 
 	abstract public class EditorBase<T> : UnityEditor.Editor where T : UnityEngine.Object
 	{
-
-		Dictionary<string, SerializedProperty> _properties = new Dictionary<string, SerializedProperty>();
+		private Dictionary<string, SerializedProperty> _properties = new Dictionary<string, SerializedProperty>();
+		static private readonly Color _missingColor = new Color(0xFF, 0x00, 0x00, 0xFF);
 
 		virtual protected bool ShowScriptField => true;
 
@@ -73,7 +74,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = editor.GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = prop.serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -83,7 +91,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -94,6 +109,11 @@ namespace Barliesque.InspectorTools.Editor
 			var prop = parent.FindPropertyRelative(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				if (label == null)
 				{
 					EditorGUILayout.PropertyField(prop);
@@ -102,6 +122,7 @@ namespace Barliesque.InspectorTools.Editor
 				{
 					EditorGUILayout.PropertyField(prop, new GUIContent(label));
 				}
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -111,7 +132,15 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = editor.GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = prop.serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip));
+				if (requiredObj) GUI.color = color;
+				
 			}
 			return prop;
 		}
@@ -121,7 +150,18 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null)
+				{
+					GUI.color = _missingColor;
+				}
+
 				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip));
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -131,7 +171,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip), options);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -141,7 +188,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, label);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -151,7 +205,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, label, options);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -161,7 +222,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = editor.GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = prop.serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip), includeChildren);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
@@ -171,7 +239,14 @@ namespace Barliesque.InspectorTools.Editor
 			SerializedProperty prop = GetProperty(propName);
 			if (prop != null)
 			{
+				var targetType = serializedObject.targetObject.GetType();
+				var field = targetType.GetField(prop.name,  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				var requiredObj = field?.GetCustomAttribute<RequiredObjectAttribute>(true) != null;
+
+				var color = GUI.color;
+				if (requiredObj && prop.objectReferenceValue == null) GUI.color = _missingColor;
 				EditorGUILayout.PropertyField(prop, new GUIContent(label, prop.tooltip), includeChildren);
+				if (requiredObj) GUI.color = color;
 			}
 			return prop;
 		}
