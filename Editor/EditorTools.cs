@@ -15,10 +15,14 @@ namespace Barliesque.InspectorTools.Editor
 		/// <summary>
 		/// Controls the display of HelpBoxes created with the HelpBox property attribute.
 		/// </summary>
-		static public bool HelpBoxesEnabled {
+		static public bool HelpBoxesEnabled 
+		{
 			get { return HelpBoxAttribute.enabled; }
 			set { HelpBoxAttribute.enabled = value; }
 		}
+
+		/// <summary> Based on the internal constant EditorGUI.kIndentPerLevel </summary>
+		public const float IndentPerLevel = 15f;
 
 		const int ARRAY_PAGE_SIZE = 20;
 		static Dictionary<int, int> _page = new Dictionary<int, int>();
