@@ -10,7 +10,7 @@ namespace Barliesque.InspectorTools
 
         public LabelAttribute(string label)
         {
-            Label = label;
+            Label = string.IsNullOrEmpty(label) ? " " : label;
         }
     }
 }

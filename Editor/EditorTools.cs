@@ -169,13 +169,13 @@ namespace Barliesque.InspectorTools.Editor
 		/// <summary>
 		/// Create a HelpBox using the HelpBox attribute found on a property
 		/// </summary>
-		static public void HelpBox(Type type, string propName)
+		static public void HelpBox(Type type, string propName, bool wide = false)
 		{
 			var field = type.GetField(propName);
 			var help = Attribute.GetCustomAttribute(field, typeof(HelpBoxAttribute)) as HelpBoxAttribute;
 			if (help != null) {
 				GUILayout.Space(help.spaceAbove);
-				EditorGUILayout.HelpBox(help.text, (MessageType)help.messageType);
+				EditorGUILayout.HelpBox(help.text, (MessageType)help.messageType, wide);
 				GUILayout.Space(help.spaceBelow);
 			}
 		}
@@ -186,14 +186,15 @@ namespace Barliesque.InspectorTools.Editor
 		/// </summary>
 		/// <param name="help">The help message</param>
 		/// <param name="type">(Optional)  Type of icon to display.</param>
+		/// <param name="wide">If true, the box will cover the whole width of the window; otherwise it will cover the controls part only.</param>
 		/// <returns>Returns true if the mouse has been clicked on this HelpBox</returns>
-		static public bool HelpBox(string help, MessageType type = MessageType.None)
+		static public bool HelpBox(string help, MessageType type = MessageType.None, bool wide = true)
 		{
 			EditorStyles.helpBox.richText = true;
 			
 			try
 			{
-				EditorGUILayout.HelpBox(help, type);
+				EditorGUILayout.HelpBox(help, type, wide);
 			} catch
 			{
 				return false;
