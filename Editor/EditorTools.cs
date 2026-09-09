@@ -963,6 +963,87 @@ namespace Barliesque.InspectorTools.Editor
 			EditorGUILayout.Space();
 			return pressed;
 		}
+		
+		
+		/// <summary>
+		/// Allow multi-selection from an array of strings, as if it were a flags enum
+		/// </summary>
+		/// <param name="field">The string field to be targeted.</param>
+		/// <param name="options">Collection of strings to select from.</param>
+		/// <param name="unspecifiedTag">An option for the none-selected state -- stored as an empty string.</param>
+		static public void MultiSelectString(SerializedProperty field, IList<string> options, string unspecifiedTag = "[Unspecified]")
+		{
+			// If the field is empty, we treat the working list as having the [Unspecified] tag for UI purposes
+			var currentValues = string.IsNullOrEmpty(field.stringValue)
+				? new List<string> { unspecifiedTag }
+				: new List<string>(field.stringValue.Split(',', System.StringSplitOptions.RemoveEmptyEntries));
+
+			var controlRect = EditorGUILayout.GetControlRect();
+			var labelContent = new GUIContent(field.displayName, field.tooltip);
+			var dropdownRect = EditorGUI.PrefixLabel(controlRect, labelContent);
+
+			// Use the tag as the fallback display text if the stored value is empty
+			var displayString = string.IsNullOrEmpty(field.stringValue) ? unspecifiedTag : field.stringValue;
+			var displayContent = new GUIContent(displayString);
+
+			if (!EditorGUI.DropdownButton(dropdownRect, displayContent, FocusType.Passive)) return;
+
+			// Dropdown button pressed.  Build the menu.
+			var menu = new GenericMenu();
+			foreach (var option in options)
+			{
+				if (string.IsNullOrEmpty(option))
+				{
+					continue;
+				}
+
+				var selected = option;
+				var isSelected = currentValues.Contains(selected);
+
+				menu.AddItem(new GUIContent(selected), isSelected, () =>
+				{
+					if (selected == unspecifiedTag)
+					{
+						// If [Unspecified] is selected, clear everything else and add the tag
+						currentValues.Clear();
+						currentValues.Add(unspecifiedTag);
+					}
+					else
+					{
+						// If any other item is selected, ensure [Unspecified] is removed
+						currentValues.Remove(unspecifiedTag);
+
+						if (isSelected)
+						{
+							currentValues.Remove(selected);
+						}
+						else
+						{
+							currentValues.Add(selected);
+						}
+
+						// If the list becomes empty, default back to the [Unspecified] tag
+						if (currentValues.Count == 0)
+						{
+							currentValues.Add(unspecifiedTag);
+						}
+					}
+
+					// If the list only contains the tag, we store string.Empty
+					var isOnlyUnspecified = currentValues.Count == 1 && currentValues[0] == unspecifiedTag;
+					field.stringValue = isOnlyUnspecified ? string.Empty : string.Join(",", currentValues);
+
+					// ApplyModifiedProperties registers the change for a single-step Undo
+					if (field.serializedObject.targetObject != null)
+					{
+						field.serializedObject.ApplyModifiedProperties();
+					}
+				});
+			}
+
+			menu.DropDown(dropdownRect);
+		}
+
 	}
 	
 }
