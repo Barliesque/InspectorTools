@@ -34,11 +34,14 @@ namespace Barliesque.InspectorTools.Editor
 		
 		protected int Index { get; private set; }
 
+		virtual protected GUIContent CustomLabel(GUIContent defaultLabel) => defaultLabel;
+
 		override public sealed void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			var attributes = fieldInfo.GetCustomAttributes(typeof(TooltipAttribute), true);
 			_propTooltip = attributes.Length > 0 ? ((TooltipAttribute) attributes[0]).tooltip : null;
 			label.tooltip = _propTooltip;
+			label = CustomLabel(label);
 
 			// Using BeginProperty / EndProperty on the parent property means that
 			// prefab override logic works on the entire property.

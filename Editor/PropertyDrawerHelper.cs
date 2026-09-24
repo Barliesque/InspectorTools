@@ -36,6 +36,8 @@ namespace Barliesque.InspectorTools.Editor
 		float _originalMargin;
 		protected float Margin => (LeftMargin > 0f ? LeftMargin : _originalMargin);
 		string _propTooltip;
+		
+		virtual protected GUIContent CustomLabel(GUIContent defaultLabel) => defaultLabel;
 
 		override public sealed void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -50,6 +52,7 @@ namespace Barliesque.InspectorTools.Editor
 			}
 
 			label.tooltip = _propTooltip;
+			label = CustomLabel(label);
 
 			// Using BeginProperty / EndProperty on the parent property means that
 			// prefab override logic works on the entire property.
