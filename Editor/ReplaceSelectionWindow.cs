@@ -50,16 +50,19 @@ namespace Barliesque.InspectorTools.Editor
 
 			var translationMap = new Dictionary<Object, Object>();
 
+			// Covers regular prefabs, variants and models alike
+			var isPrefabAsset = PrefabUtility.IsPartOfPrefabAsset(_replacementObject);
+
 			// 1. Instantiate replacements and map references
 			foreach (var targetTransform in selectedTransforms)
 			{
 				var oldGo = targetTransform.gameObject;
-				var assetType = PrefabUtility.GetPrefabAssetType(_replacementObject);
 				GameObject newGo;
 
-				if (assetType is PrefabAssetType.Regular or PrefabAssetType.Model)
+				if (isPrefabAsset)
 				{
-					newGo = (GameObject)PrefabUtility.InstantiatePrefab(_replacementObject);
+					// Instantiate into the same scene as the original, keeping the prefab connection
+					newGo = (GameObject)PrefabUtility.InstantiatePrefab(_replacementObject, oldGo.scene);
 				}
 				else
 				{
@@ -70,9 +73,12 @@ namespace Barliesque.InspectorTools.Editor
 
 				Undo.RegisterCreatedObjectUndo(newGo, "Instantiate Replacement");
 
-				// Match Transform
+				// Match hierarchy placement
 				var newTransform = newGo.transform;
-				newTransform.parent = targetTransform.parent;
+				Undo.SetTransformParent(newTransform, targetTransform.parent, "Parent Replacement");
+				newTransform.SetSiblingIndex(targetTransform.GetSiblingIndex());
+
+				// Match Transform
 				newTransform.localPosition = targetTransform.localPosition;
 				newTransform.localRotation = targetTransform.localRotation;
 				newTransform.localScale = targetTransform.localScale;
@@ -126,7 +132,6 @@ namespace Barliesque.InspectorTools.Editor
 
 			// Find every component in the scene, including inactive ones
 			var allComponents = FindObjectsByType<Component>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-			var progress = 0f;
 			var total = (float)allComponents.Length;
 
 			for (var i = 0; i < allComponents.Length; i++)
