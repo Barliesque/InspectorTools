@@ -10,6 +10,8 @@ namespace Barliesque.InspectorTools.Editor
 		override public void OnInspectorGUI()
 		{
 			DrawDefaultInspector();
+			
+			EditorTools.DrawUILine(Color.gray, 2, 16);
 			EditorTools.DrawInspectorButtons(target, targets);
 		}
 	}

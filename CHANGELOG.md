@@ -1,6 +1,12 @@
 # Barliesque Inspector Tools - Changelog
 
 
+## [1.0.4] - 2026-11-18
+### Added
+- Added support for InspectorButton tooltips and grouping
+### Changed
+- Minimum Unity version increased to 2022.3
+
 ## [1.0.3] - 2026-11-18
 ### Added
 - Added attribute InspectorButton

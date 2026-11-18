@@ -1045,6 +1045,7 @@ namespace Barliesque.InspectorTools.Editor
 			menu.DropDown(dropdownRect);
 		}
 
+		static public void DrawInspectorButtons(Object target) => DrawInspectorButtons(target, new[] { target });
 	
 		static public void DrawInspectorButtons(Object target, Object[] targets)
 		{
@@ -1057,15 +1058,23 @@ namespace Barliesque.InspectorTools.Editor
 				BindingFlags.NonPublic
 			);
 
+			var grouped = false;
 			foreach (var method in methods)
 			{
 				var attribute = method.GetCustomAttribute<InspectorButtonAttribute>();
-				if (attribute == null) continue;
+				
+				if (attribute == null)
+				{
+					Ungroup();
+					continue;
+				}
+				if (attribute.GroupWithNext) Group();
 
 				// Use the custom label if provided, otherwise format the method name nicely
-				string label = string.IsNullOrEmpty(attribute.ButtonLabel)
+				var label = new GUIContent(string.IsNullOrEmpty(attribute.ButtonLabel)
 					? ObjectNames.NicifyVariableName(method.Name)
-					: attribute.ButtonLabel;
+					: attribute.ButtonLabel);
+				if (!string.IsNullOrEmpty(attribute.ButtonTooltip)) label.tooltip = attribute.ButtonTooltip;
 
 				if (GUILayout.Button(label))
 				{
@@ -1075,6 +1084,22 @@ namespace Barliesque.InspectorTools.Editor
 						method.Invoke(obj, null);
 					}
 				}
+				if (!attribute.GroupWithNext) Ungroup();
+			}
+			Ungroup();
+			return;
+
+			void Group()
+			{
+				if (grouped) return;
+				EditorGUILayout.BeginHorizontal();
+				grouped = true;
+			}
+
+			void Ungroup()
+			{
+				if (grouped) EditorGUILayout.EndHorizontal();
+				grouped = false;
 			}
 		}
 	
