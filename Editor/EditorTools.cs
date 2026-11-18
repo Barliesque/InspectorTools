@@ -1058,6 +1058,17 @@ namespace Barliesque.InspectorTools.Editor
 				BindingFlags.NonPublic
 			);
 
+			var anyButtons = false;
+			foreach (var method in methods)
+			{
+				var attribute = method.GetCustomAttribute<InspectorButtonAttribute>();
+				if (attribute == null) continue;
+				anyButtons = true;
+			}
+			if (!anyButtons) return;
+			
+			DrawUILine(Color.gray, 1, 16);
+
 			var grouped = false;
 			foreach (var method in methods)
 			{
