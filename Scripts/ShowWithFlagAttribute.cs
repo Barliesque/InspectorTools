@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Barliesque.InspectorTools
@@ -6,7 +5,7 @@ namespace Barliesque.InspectorTools
 	public class ShowWithFlagAttribute : PropertyAttribute
 	{
 		public readonly string FlagsProp;
-		public readonly Enum Flag;
+		public readonly object Flag;
 		public readonly bool ShowIfSet;
 		public readonly bool Indent;
 
@@ -17,7 +16,7 @@ namespace Barliesque.InspectorTools
 		/// <param name="flag">The specific flag to control visibility of this property.</param>
 		/// <param name="showIfSet">If true, the property will be visible if the flag is present.  If false, the flag hides the property.</param>
 		/// <param name="indent">Indenting beneath the flags property helps show the connection.</param>
-		public ShowWithFlagAttribute(string flagsProp, Enum flag, bool showIfSet = true, bool indent = true)
+		public ShowWithFlagAttribute(string flagsProp, object flag, bool showIfSet = true, bool indent = true)
 		{
 			FlagsProp = flagsProp;
 			Flag = flag;
