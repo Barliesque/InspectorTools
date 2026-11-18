@@ -4,6 +4,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Reflection;
 using Barliesque.Utils;
+using Object = UnityEngine.Object;
 
 
 namespace Barliesque.InspectorTools.Editor
@@ -1044,6 +1045,39 @@ namespace Barliesque.InspectorTools.Editor
 			menu.DropDown(dropdownRect);
 		}
 
+	
+		static public void DrawInspectorButtons(Object target, Object[] targets)
+		{
+			// Scan all methods on the target script (public, private, and inherited)
+			var targetType = target.GetType();
+			var methods = targetType.GetMethods(
+				BindingFlags.Instance |
+				BindingFlags.Static |
+				BindingFlags.Public |
+				BindingFlags.NonPublic
+			);
+
+			foreach (var method in methods)
+			{
+				var attribute = method.GetCustomAttribute<InspectorButtonAttribute>();
+				if (attribute == null) continue;
+
+				// Use the custom label if provided, otherwise format the method name nicely
+				string label = string.IsNullOrEmpty(attribute.ButtonLabel)
+					? ObjectNames.NicifyVariableName(method.Name)
+					: attribute.ButtonLabel;
+
+				if (GUILayout.Button(label))
+				{
+					// Loop through 'targets' so multi-object editing works too
+					foreach (var obj in targets)
+					{
+						method.Invoke(obj, null);
+					}
+				}
+			}
+		}
+	
 	}
 	
 }

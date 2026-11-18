@@ -319,7 +319,10 @@ namespace Barliesque.InspectorTools.Editor
 			EditorTools.EndFoldout(unfolded);
 		}
 
-
+		protected void DrawInspectorButtons()
+		{
+			EditorTools.DrawInspectorButtons(target, targets);
+		}
 
 	}
 
