@@ -1,4 +1,4 @@
-# Changelog
+# Barliesque Inspector Tools - Changelog
 
 ## [1.0.1] - 2026-11-18
 ### Added
