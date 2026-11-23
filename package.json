@@ -1,7 +1,7 @@
 {
   "name": "com.barliesque.inspector-tools",
   "displayName": "Inspector Tools",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "unity": "2022.3",
   "description": "A collection of utilities to either create custom inspectors for your components, or via meta tags, customize the default inspector.",
   "keywords": ["unity", "package", "inspector", "tools"],

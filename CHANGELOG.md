@@ -1,6 +1,10 @@
 # Barliesque Inspector Tools - Changelog
 
 
+## [1.0.5] - 2026-11-23
+### Added
+- Added attribute EnumPath to support hierarchical selection and custom Inspector labels.
+
 ## [1.0.4] - 2026-11-18
 ### Added
 - Added support for InspectorButton tooltips and grouping
